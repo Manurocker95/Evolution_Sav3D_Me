@@ -3,7 +3,7 @@
 
 /* This file is part of Evolution Sav3D Me!
 
-Copyright (C) 2016 Manuel Rodríguez Matesanz
+Copyright (C) 2016 Manuel RodrÃ­guez Matesanz
 >    This program is free software: you can redistribute it and/or modify
 >    it under the terms of the GNU General Public License as published by
 >    the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +28,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 #define SCORE_FILE "romfs:/resources/Files/data.txt"
 
 /* Sonido */
-// Música de fondo
+// MÃºsica de fondo
 #define SND_BGM_TITLE "romfs:/resources/Sounds/Music/HomeBaseGroove.wav"
 #define SND_BGM_GAME  "romfs:/resources/Sounds/Music/game.wav"
 #define SND_BGM_GAMEOVER "romfs:/resources/Sounds/bgm/game_over.bin"
@@ -43,7 +43,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 #define SND_SFX_BANANA "romfs:/resources/Sounds/SFX/Banana.wav"
 #define SND_SFX_FIRE "romfs:/resources/Sounds/SFX/PowerUp.wav"
 
-/* Imágenes */
+/* ImÃ¡genes */
 // Backgrounds
 #define IMG_BG_TITLE_TOP "romfs:/resources/Art/bgTitletop.png"
 #define IMG_BG_TITLE_BOT "romfs:/resources/Art/bgTitlebot.png"
@@ -57,7 +57,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 #define IMG_SPLASHSCREEN "romfs:/resources/Art/sc.png"
 #define IMG_SPLASHSCREENBOTTOM "romfs:/resources/Art/scbot.png"
 
-// Sprites (Mono, plátano, fuego...)
+// Sprites (Mono, plÃ¡tano, fuego...)
 #define IMG_MONKEY_SPRITE "romfs:/resources/Art/Monkey.png"
 #define IMG_MONKEY_SPRITE_DYING "romfs:/resources/Art/DyingMonkey.png"
 #define IMG_MONKEY_SPRITE_DEAD "romfs:/resources/Art/DeadMonkey.png"
@@ -73,7 +73,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 // Fuentes
 
 #define FONT_NORMAL "romfs:/resources/Font/BitBold.ttf"
-#define FONT_PIXEL "romfs:/resources/Pixelated-12.sfn"
+#define FONT_PIXEL "romfs:/resources/Font/Pixelated-12.sfn"
 #define FONT_FREESANS "romfs:/resources/Font/FreeSans.ttf"
 #define FONT_BFF "romfs:/resources/Font/fixedsys.bff"
 
