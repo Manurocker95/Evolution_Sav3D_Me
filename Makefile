@@ -35,9 +35,9 @@ BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
-#ROMFS		:=	romfs
-APP_TITLE   :=  Evolution Sav3D Me
-APP_DESCRIPTION := A Monkey who wants to survive
+ROMFS		:=	romfs
+APP_TITLE   :=  Evolution Sav3D Me!!
+APP_DESCRIPTION := A monkey who wants to survive!
 APP_AUTHOR  :=  Manurocker95
 ICON        :=  icon.png
 #---------------------------------------------------------------------------------
@@ -144,9 +144,18 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf
-
-
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET)-strip.elf $(TARGET).cia $(TARGET).3ds
+#---------------------------------------------------------------------------------
+$(TARGET)-strip.elf: $(BUILD)
+	@$(STRIP) $(TARGET).elf -o $(TARGET)-strip.elf
+#---------------------------------------------------------------------------------
+cci: $(TARGET)-strip.elf
+	@makerom -f cci -rsf $(TARGET).rsf -target d -exefslogo -elf $(TARGET)-strip.elf -o $(TARGET).3ds
+	@echo "built ... 3ds"
+#---------------------------------------------------------------------------------
+cia: $(TARGET)-strip.elf
+	@makerom -f cia -o $(TARGET).cia -elf $(TARGET)-strip.elf -rsf $(TARGET).rsf -icon icon.icn -banner banner.bnr -exefslogo -target t
+	@echo "built ... cia"
 #---------------------------------------------------------------------------------
 else
 

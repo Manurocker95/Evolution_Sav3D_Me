@@ -43,6 +43,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 #include <fstream>
 #include <vector> 
 #include<fstream>
+#include <unistd.h>
 
 // Colores 
 #define C_BLACK RGBA8(0, 0, 0, 255)

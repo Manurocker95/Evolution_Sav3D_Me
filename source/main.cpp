@@ -70,7 +70,7 @@ int main()
 	sftd_init();
 
 	// Romfs
-	//romfsInit();
+	romfsInit();
 
 	// Sound
 	
@@ -78,7 +78,7 @@ int main()
 
 	//MAX SCORE DATA
 	ifstream myReadFile(SCORE_FILE);
-	int score;
+	int score = 0;
 	myReadFile >> score;
 
 	if (score == NULL)
@@ -106,7 +106,7 @@ int main()
 	delete (m_game);
 
 	// Salimos de los servicios y eliminamos de memoria los obj. sobrantes
-	//romfsExit();
+	romfsExit();
 	ndspExit();
 	sf2d_fini();
 	sftd_fini();
