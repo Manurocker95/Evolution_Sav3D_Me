@@ -150,11 +150,11 @@ $(TARGET)-strip.elf: $(BUILD)
 	@$(STRIP) $(TARGET).elf -o $(TARGET)-strip.elf
 #---------------------------------------------------------------------------------
 cci: $(TARGET)-strip.elf
-	@makerom -f cci -rsf $(TARGET).rsf -target d -exefslogo -elf $(TARGET)-strip.elf -o $(TARGET).3ds
+	@makerom -f cci -rsf resources/$(TARGET).rsf -target d -exefslogo -elf $(TARGET)-strip.elf -o $(TARGET).3ds
 	@echo "built ... 3ds"
 #---------------------------------------------------------------------------------
 cia: $(TARGET)-strip.elf
-	@makerom -f cia -o $(TARGET).cia -elf $(TARGET)-strip.elf -rsf $(TARGET).rsf -icon icon.icn -banner banner.bnr -exefslogo -target t
+	@makerom -f cia -o $(TARGET).cia -elf $(TARGET)-strip.elf -rsf resources/$(TARGET).rsf -icon resources/icon.icn -banner resources/banner.bnr -exefslogo -target t
 	@echo "built ... cia"
 #---------------------------------------------------------------------------------
 else

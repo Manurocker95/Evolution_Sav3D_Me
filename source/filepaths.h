@@ -19,11 +19,6 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 >    See LICENSE for information.
 */
 
-/* Rutas a las carpetas */
-#define FILEPATH_SOUND "romfs:/resources/Sounds/"
-#define FILEPATH_IMAGE "romfs:/resources/Art/"
-#define FILEPATH_FILE "romfs:/resources/Files/"
-
 //Documento de Maxima puntuacion 
 #define SCORE_FILE "romfs:/resources/Files/data.txt"
 
@@ -31,17 +26,17 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 // Música de fondo
 #define SND_BGM_TITLE "romfs:/resources/Sounds/Music/HomeBaseGroove.wav"
 #define SND_BGM_GAME  "romfs:/resources/Sounds/Music/game.wav"
-#define SND_BGM_GAMEOVER "romfs:/resources/Sounds/bgm/game_over.bin"
+#define SND_BGM_GAMEOVER "romfs:/resources/Sounds/Music/HomeBaseGroove.wav"
 #define SND_BGM_INVINCIBLE "romfs:/resources/Sounds/Music/invincible.wav"
 
 //SFX
-#define SND_SFX_SPLASH "romfs:resources/Sounds/SFX/bbb.wav"
+#define SND_SFX_SPLASH "romfs:/resources/Sounds/SFX/bbb.wav"
 #define SND_SFX_LASER "romfs:/resources/Sounds/SFX/Laser.wav"
 #define SND_SFX_LASERPREV "romfs:/resources/Sounds/SFX/LaserPrev.wav"
 #define SND_SFX_LASERHIT "romfs:/resources/Sounds/SFX/Hit.wav"
 #define SND_SFX_WOW "romfs:/resources/Sounds/SFX/audio.wav"
 #define SND_SFX_BANANA "romfs:/resources/Sounds/SFX/Banana.wav"
-#define SND_SFX_FIRE "romfs:/resources/Sounds/SFX/PowerUp.wav"
+#define SND_SFX_FIRE "romfs:/resources/Sounds/SFX/Powerup.wav"
 
 /* Imágenes */
 // Backgrounds
