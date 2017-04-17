@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _LIBRARIES_H_
 #define _LIBRARIES_H_
 
@@ -63,11 +64,13 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 #define CELL_SIZE 40
 
 // Versión: La 1.0 es la primera release
-#define VERSION "0.8.1"
+#define VERSION "1.0"
 #define DEBUGMODE false
 
 //Configuración 3D
 #define CONFIG_3D_SLIDERSTATE (*(float *)0x1FF81080)
+#define EFFECT_3D_ACTIVATED true
+#define MULTIPLIER_3D 10
 
 //Audio
 #define SAMPLERATE 22050

@@ -25,8 +25,9 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 // #================================================================#
 
 // Constructor
-Game::Game()
+Game::Game(int score)
 {
+	m_maxScore = score;
 	m_playingMusicTitle = false;
 	m_playingMusicGame = false;
 	m_sfxSplash = false;
@@ -50,7 +51,12 @@ Game::Game()
 	m_activeBananas = 0;
 	m_rayCounter = 0;
 	m_deltaRay = 0;
+	m_offset = 0;
 	m_timeToSpawn = TIME_TO_SPAWN_RAYS;
+	
+	m_rays[0] = new Ray();
+	m_rays[1] = new Ray();
+	m_rays[2] = new Ray();
 }
 
 void Game::OpeningAnimation()
@@ -62,6 +68,10 @@ void Game::OpeningAnimation()
 // Draw - Se pintan los gráficos
 void Game::Draw()
 {
+	// 3D effect
+	if (EFFECT_3D_ACTIVATED)
+		m_offset = CONFIG_3D_SLIDERSTATE * MULTIPLIER_3D;
+
 	switch (m_screen)
 	{
 	case SPLASH:
@@ -74,10 +84,6 @@ void Game::Draw()
 
 			sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 			sf2d_draw_texture_blend(m_backgroundImageBot, 0, 0, RGBA8(255, 255, 255, m_splashOpacity));
-
-			if (m_DebugMode)
-				fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
-
 			sf2d_end_frame();
 
 			m_splashOpacity += 3;
@@ -105,8 +111,6 @@ void Game::Draw()
 
 			sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 			sf2d_draw_texture_blend(m_backgroundImageBot, 0, 0, RGBA8(255, 255, 255, m_splashOpacity));
-			if (m_DebugMode)
-				fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
 			sf2d_end_frame();
 
 			if (m_scTimer >= 300)
@@ -122,8 +126,6 @@ void Game::Draw()
 
 			sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 			sf2d_draw_texture_blend(m_backgroundImageBot, 0, 0, RGBA8(255, 255, 255, m_splashOpacity));
-			if (m_DebugMode)
-				fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
 			sf2d_end_frame();
 
 			m_splashOpacity -= 3;
@@ -154,10 +156,6 @@ void Game::Draw()
 		sftd_draw_text(font, 125, 150, C_BLUE, 20, "Best:");
 		sftd_draw_text(font, 185, 150, C_BLUE, 20, std::to_string(m_maxScore).c_str());
 
-		if (m_DebugMode)
-			fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
-
-
 		sftd_draw_text(font, 50, HEIGHT - 20, C_WHITE, 12, "(C) Manurocker95 2017");
 		sftd_draw_text(font, 230, HEIGHT - 20, C_WHITE, 12, "VERSION:");
 		sftd_draw_text(font, 280, HEIGHT - 20, C_WHITE, 12, VERSION);
@@ -169,16 +167,35 @@ void Game::Draw()
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
 		sf2d_draw_texture(m_backgroundImageTop, 0, 0);
 
-		m_bananas[0]->Draw();
-		m_bananas[1]->Draw();
-		m_bananas[2]->Draw();
+		m_bananas[0]->Draw(0);
+		m_bananas[1]->Draw(0);
+		m_bananas[2]->Draw(0);
 
-		m_fire->Draw();
-		m_player->Draw();
+		/* DEBUGING
+		fnt->drawStr("X:" + std::to_string(m_rays[0]->getX()*CELL_SIZE), 10, 10, C_BLACK);
+		fnt->drawStr("Y:" + std::to_string(m_rays[0]->getY()*CELL_SIZE), 10, 25, C_BLACK);
+		fnt->drawStr("X:" + std::to_string(m_rays[1]->getX()*CELL_SIZE), 10, 40, C_BLACK);
+		fnt->drawStr("Y:" + std::to_string(m_rays[1]->getY()*CELL_SIZE), 10, 55, C_BLACK);
+		fnt->drawStr("X:" + std::to_string(m_rays[2]->getX()*CELL_SIZE), 10, 70, C_BLACK);
+		fnt->drawStr("Y:" + std::to_string(m_rays[2]->getY()*CELL_SIZE), 10, 85, C_BLACK);
+		*/
+		m_fire->Draw(0);
+		m_player->Draw(0);
 
-		if (m_rayCounter > 0)
+		if (m_rayCounter == 1)
 		{
-			m_rays[0]->Draw();
+			m_rays[0]->Draw(0);
+		}
+		else if (m_rayCounter == 2)
+		{
+			m_rays[0]->Draw(0);
+			m_rays[1]->Draw(0);
+		}
+		else if (m_rayCounter == 3)
+		{
+			m_rays[0]->Draw(0);
+			m_rays[1]->Draw(0);
+			m_rays[2]->Draw(0);
 		}
 
 		sf2d_draw_texture(m_buttonBestScore, 120, 0);
@@ -193,6 +210,47 @@ void Game::Draw()
 
 		sf2d_end_frame();
 
+		if (EFFECT_3D_ACTIVATED)
+		{
+			sf2d_start_frame(GFX_TOP, GFX_RIGHT);
+			sf2d_draw_texture(m_backgroundImageTop, 0, 0);
+
+			m_fire->Draw(m_offset);
+			m_player->Draw(m_offset);
+
+			m_bananas[0]->Draw(m_offset);
+			m_bananas[1]->Draw(m_offset);
+			m_bananas[2]->Draw(m_offset);
+
+			if (m_rayCounter == 1)
+			{
+				m_rays[0]->Draw(m_offset);
+			}
+			else if (m_rayCounter == 2)
+			{
+				m_rays[0]->Draw(m_offset);
+				m_rays[1]->Draw(m_offset);
+			}
+			else if (m_rayCounter == 3)
+			{
+				m_rays[0]->Draw(m_offset);
+				m_rays[1]->Draw(m_offset);
+				m_rays[2]->Draw(m_offset);
+			}
+
+			sf2d_draw_texture(m_buttonBestScore, 120- m_offset, 0);
+			sftd_draw_text(font, 145- m_offset, 5, C_BLUE, 20, "Score:");
+			sftd_draw_text(font, 225- m_offset, 5, C_BLUE, 20, std::to_string(m_score).c_str());
+
+			if (m_state == PAUSE)
+			{
+				sf2d_draw_texture(m_splashScreen, 0, 0);
+				sftd_draw_text(font, 40- m_offset, 160, C_BLUE, 15, "Tap the bottom screen or Press A/Start to resume.");
+			}
+
+			sf2d_end_frame();
+		}
+
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		sf2d_draw_texture(m_backgroundImageBot, 0, 0);
 		sf2d_draw_texture(m_buttonPlay, 100, 65);
@@ -203,17 +261,6 @@ void Game::Draw()
 		if (m_state == PAUSE)
 		{
 			sf2d_draw_texture(m_splashScreen, -40, 0);
-		}
-
-		if (m_DebugMode)
-		{
-			fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
-			fnt->drawStr("RayCounter:" + std::to_string(m_rayCounter), 5, 15, RGBA8(0x00, 0x00, 0x00, 0xFF));
-			fnt->drawStr("RayTimer:" + std::to_string(m_deltaRay), 5, 25, RGBA8(0x00, 0x00, 0x00, 0xFF));
-			fnt->drawStr("Invincible:" + std::to_string(m_player->getInvincible()), 5, 35, RGBA8(0x00, 0x00, 0x00, 0xFF));
-			if (m_rayCounter > 0)
-				fnt->drawStr("Invincible:" + std::to_string(m_rays[0]->getCounter()), 5, 45, RGBA8(0x00, 0x00, 0x00, 0xFF));
-
 		}
 		sf2d_end_frame();
 
@@ -228,8 +275,6 @@ void Game::Draw()
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		sf2d_draw_texture(m_backgroundImageBot, 0, 0);
 		sftd_draw_text(font, 70, 130, C_WHITE, 20, "Tap the bottom screen.");
-		if (m_DebugMode)
-			fnt->drawStr("FPS:" + std::to_string(sf2d_get_fps()), 5, 5, RGBA8(0x00, 0x00, 0x00, 0xFF));
 		sf2d_end_frame();
 
 		break;
@@ -251,6 +296,10 @@ void Game::InitializeGame()
 	}
 
 	m_fire = new Object(Object::FIRE, sfil_load_PNG_file(IMG_FIRE_SPRITE, SF2D_PLACE_RAM), -CELL_SIZE, -CELL_SIZE, 4, 32, true);
+	
+	m_rays[0]->InitialPos();
+	m_rays[1]->InitialPos();
+	m_rays[2]->InitialPos();
 
 	m_score = 0;
 	m_state = PLAYING;
@@ -365,9 +414,20 @@ void Game::CheckInputs()
 
 			m_fire->Update();
 
-			if (m_rayCounter > 0)
+			if (m_rayCounter == 1)
 			{
 				m_rays[0]->Update();
+			}
+			else if (m_rayCounter == 2)
+			{
+				m_rays[0]->Update();
+				m_rays[1]->Update();
+			}
+			else if (m_rayCounter == 3)
+			{
+				m_rays[0]->Update();
+				m_rays[1]->Update();
+				m_rays[2]->Update();
 			}
 
 			if (hidKeysDown() & KEY_TOUCH)
@@ -395,8 +455,9 @@ void Game::CheckInputs()
 			m_bgm2->stop();
 			m_playingMusicGame = false;
 			m_screen = TITLESCREEN;
-			
+
 			delete(m_player);
+
 			if (m_bananas[0])
 				delete(m_bananas[0]);
 			if (m_bananas[1])
@@ -560,43 +621,84 @@ void Game::UpdateGame()
 				}
 			}
 
-
 			// RAYOS:
 
-			if (m_rayCounter == 0)
-			{
-				m_deltaRay++;
+			m_deltaRay++;
 
-				if (m_deltaRay >= m_timeToSpawn)
-				{
-					m_rayCounter++;
-					m_rays[0] = new Ray();
-					m_deltaRay = 0;
-				}
-			}
-			else
+			if (m_deltaRay >= m_timeToSpawn)
 			{
-				m_deltaRay++;
-
-				if (m_deltaRay >= m_timeToSpawn)
+				int numraystospawn = rand() % 3;
+				if (numraystospawn == 0)
 				{
 					m_rays[0]->loadData();
-					m_deltaRay = 0;
+					m_rayCounter = 1;
+				}
+				else if (numraystospawn == 1)
+				{
+					m_rays[0]->loadData();
+					m_rays[1]->loadData();
+					if (m_rays[1]->getX() == m_rays[0]->getX())
+					{
+						m_rays[1]->NewPos();
+					}
+					m_rayCounter = 2;
+				}
+				else if (numraystospawn == 2)
+				{
+					m_rays[0]->loadData();
+					m_rays[1]->loadData();
+					m_rays[2]->loadData();
+
+					if (m_rays[1]->getX() == m_rays[0]->getX() || m_rays[2]->getX() == m_rays[1]->getX())
+					{
+						m_rays[1]->NewPos();
+						m_rays[2]->NewPos();
+					}
+
+					if (m_rays[2]->getX() == m_rays[0]->getX())
+					{
+						m_rays[0]->NewPos();
+						m_rays[0]->NewPos();
+					}
+
+					m_rayCounter = 3;
 				}
 
-				if (m_rays[0]->CheckCollision(m_player))
-				{
-					m_state = DYING;
-					m_player->setState(Monkey::DYING);
-					m_player->setSprite(sfil_load_PNG_file(IMG_MONKEY_SPRITE_DYING, SF2D_PLACE_RAM));
-					m_player->setFrameSize(32);
-					m_player->setNumFrames(8);
-					m_rayCounter--;
-					m_deltaRay = 0;
-					delete(m_rays[0]);
-				}
+				m_deltaRay = 0;
 			}
 
+			if (m_rays[0]->CheckCollision(m_player))
+			{
+				m_state = DYING;
+				m_player->setState(Monkey::DYING);
+				m_player->setSprite(sfil_load_PNG_file(IMG_MONKEY_SPRITE_DYING, SF2D_PLACE_RAM));
+				m_player->setFrameSize(32);
+				m_player->setNumFrames(8);
+				m_rayCounter = 0;
+				m_deltaRay = 0;
+			}
+
+			if (m_rayCounter > 1 && m_rays[1]->CheckCollision(m_player))
+			{
+				m_state = DYING;
+				m_player->setState(Monkey::DYING);
+				m_player->setSprite(sfil_load_PNG_file(IMG_MONKEY_SPRITE_DYING, SF2D_PLACE_RAM));
+				m_player->setFrameSize(32);
+				m_player->setNumFrames(8);
+				m_rayCounter = 0;
+				m_deltaRay = 0;
+			}
+
+			if (m_rayCounter > 2 && m_rays[2]->CheckCollision(m_player))
+			{
+				m_state = DYING;
+				m_player->setState(Monkey::DYING);
+				m_player->setSprite(sfil_load_PNG_file(IMG_MONKEY_SPRITE_DYING, SF2D_PLACE_RAM));
+				m_player->setFrameSize(32);
+				m_player->setNumFrames(8);
+				m_rayCounter = 0;
+				m_deltaRay = 0;
+			}
 		}
 		else if (m_state == PAUSE)
 		{
@@ -683,12 +785,17 @@ void Game::End()
 	m_bananas[1]->End();
 	m_bananas[2]->End();
 	m_fire->End();
+
 	delete (m_sfxBanana);
 	sf2d_free_texture(m_buttonPlay);
 	sf2d_free_texture(m_splashScreen);
 	sf2d_free_texture(m_backgroundImageTop);
 	sf2d_free_texture(m_backgroundImageBot);
 	sf2d_free_texture(m_buttonBestScore);
+
+	std::ofstream outfile(SCORE_FILE);
+	outfile << m_maxScore;
+	outfile.close();
 }
 
 void Game::setMaxScore(int value)
@@ -709,11 +816,9 @@ void Game::saveScoreAndExit()
 	if (m_score > m_maxScore)
 	{
 		m_maxScore = m_score;
-	}
 
-	std::ofstream ofs;
-	ofs.open(SCORE_FILE, std::ofstream::out | std::ofstream::trunc);
-	ofs << m_score;
-	ofs.close();
-	
+		std::ofstream outfile(SCORE_FILE);
+		outfile << m_maxScore;
+		outfile.close();
+	}
 }

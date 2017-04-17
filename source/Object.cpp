@@ -44,11 +44,11 @@ Object::Object(Object::Type type, sf2d_texture* sprite, int x, int y, int numFra
 	m_secondaryCounter = 0;
 }
 
-void Object::Draw()
+void Object::Draw(float offset)
 {
 	if (m_multipleFrames)
 	{
-		sf2d_draw_texture_part(m_sprite, m_x, m_y, m_currentFrame*m_sizePerFrame, 0, m_sizePerFrame, m_sizePerFrame);
+		sf2d_draw_texture_part(m_sprite, m_x-offset, m_y, m_currentFrame*m_sizePerFrame, 0, m_sizePerFrame, m_sizePerFrame);
 	}
 	else
 	{

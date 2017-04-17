@@ -76,11 +76,11 @@ Monkey::Monkey(int x, int y, sf2d_texture* sprite, bool multipleFrames, int numF
 	m_state = ALIVE;
 }
 
-void Monkey::Draw()
+void Monkey::Draw(float offset)
 {
 	if (m_multipleFrames)
 	{
-		sf2d_draw_texture_part(m_sprite, m_x, m_y, m_currentFrame*m_sizePerFrame, 0, m_sizePerFrame, m_sizePerFrame);
+		sf2d_draw_texture_part(m_sprite, m_x-offset, m_y, m_currentFrame*m_sizePerFrame, 0, m_sizePerFrame, m_sizePerFrame);
 	}
 	else
 	{

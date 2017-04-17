@@ -41,6 +41,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 
 #include "Libraries.h"
 #include "Game.h"
+#include <sys/stat.h>
 
 void initializeFonts()
 {
@@ -63,7 +64,7 @@ int main()
 	sf2d_init();
 	sf2d_set_clear_color(RGBA8(0, 0, 0, 255));
 	//sf2d_set_clear_color(RGBA8(255, 255, 255, 255));
-	sf2d_set_3D(false);
+	sf2d_set_3D(EFFECT_3D_ACTIVATED);
 	//sf2d_set_vblank_wait(0);
 
 	//Sftd (Textos)
@@ -73,22 +74,30 @@ int main()
 	romfsInit();
 
 	// Sound
-	
 	ndspInit();
 
-	//MAX SCORE DATA
-	ifstream myReadFile(SCORE_FILE);
-	int score = 0;
-	myReadFile >> score;
+	//Creating Data
+	mkdir("/3ds", 0777);
+	mkdir("/3ds/data", 0777);
+	mkdir("/3ds/data/Evolution_Sav3D_Me", 0777);
 
-	if (score == NULL)
+	int score = 0;
+
+	std::ifstream myReadFile(SCORE_FILE);
+
+	if (myReadFile)
 	{
-		score = 0;
+		myReadFile >> score;
+	}
+	else
+	{
+		std::ofstream outfile(SCORE_FILE);
+		outfile << score;
+		outfile.close();
 	}
 
 	// Creamos el objeto juego
-	Game* m_game = new Game();
-	m_game->setMaxScore(score);
+	Game* m_game = new Game(score);
 
 	while (aptMainLoop())
 	{

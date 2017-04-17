@@ -30,7 +30,7 @@ public:
 	Monkey(int x, int y, sf2d_texture* sprite);
 	Monkey(int x, int y, sf2d_texture* sprite, bool multipleFrames);
 	Monkey(int x, int y, sf2d_texture* sprite, bool multipleFrames, int numFrames, int sizePerFrame);
-	void Draw();
+	void Draw(float offset);
 	void Update();
 	int getX();
 	void setX(int value);

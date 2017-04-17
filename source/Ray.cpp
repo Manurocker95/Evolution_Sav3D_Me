@@ -20,6 +20,7 @@ Copyright (C) 2016 Manuel Rodríguez Matesanz
 
 Ray::Ray()
 {
+	
 	m_disappear = false;
 	m_counter = 0;
 
@@ -30,28 +31,16 @@ Ray::Ray()
 	m_sndLaserPrev = new sound(SND_SFX_LASERPREV, 2, false, false);
 	m_sndLaserHit = new sound(SND_SFX_LASERHIT, 2, false, false);
 	m_sndLaser = new sound(SND_SFX_LASER, 2, false, false);
+	InitialPos();
+}
 
-	ndspChnWaveBufClear(2);
-	m_sndLaser->play();
+void Ray::InitialPos()
+{
 
-	srand(time(NULL));
+	m_axis = HORIZONTAL;
 
-	// Vertical / Horizontal
-	int _type = rand() % 2;
-	if (_type == 0)
-	{
-		m_axis = VERTICAL;
-		m_y = 0;
-		int _x = rand() % (8) + 1;
-		m_x = _x*CELL_SIZE;
-	}
-	else
-	{
-		m_axis = HORIZONTAL;
-		m_x = 0;
-		int _y = rand() % (4) + 1;
-		m_y = _y*CELL_SIZE;
-	}
+	m_y = -CELL_SIZE;
+	m_x = -CELL_SIZE;
 }
 
 void Ray::loadData()
@@ -63,19 +52,37 @@ void Ray::loadData()
 	m_color = C_SEMI_RED;
 
 	//Sonidos
-	m_sndLaserPrev = new sound(SND_SFX_LASERPREV, 2, false, false);
-	m_sndLaserHit = new sound(SND_SFX_LASERHIT, 2, false, false);
-	m_sndLaser = new sound(SND_SFX_LASER, 2, false, false);
-
-	ndspChnWaveBufClear(2);
 	m_sndLaser->play();
 
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	// Vertical / Horizontal
-	int _type = rand() % 2;
-	if (_type == 0)
+	int _type = rand() % 100;
+	if (_type % 2 == 0)
 	{
+		//srand(time(NULL));
+		m_axis = VERTICAL;
+		m_y = 0;
+		int _x = rand() % (8) + 1;
+		m_x = _x*CELL_SIZE;
+	}
+	else
+	{
+		//srand(time(NULL));
+		m_axis = HORIZONTAL;
+		m_x = 0;
+		int _y = rand() % (4) + 1;
+		m_y = _y*CELL_SIZE;
+	}
+}
+
+void Ray::NewPos()
+{
+	// Vertical / Horizontal
+	int _type = rand() % 100;
+	if (_type % 2 == 0)
+	{
+		srand(time(NULL));
 		m_axis = VERTICAL;
 		m_y = 0;
 		int _x = rand() % (8) + 1;
@@ -85,6 +92,7 @@ void Ray::loadData()
 	{
 		m_axis = HORIZONTAL;
 		m_x = 0;
+		srand(time(NULL));
 		int _y = rand() % (4) + 1;
 		m_y = _y*CELL_SIZE;
 	}
@@ -110,15 +118,15 @@ void Ray::setY(int value)
 	m_y = value;
 }
 
-void Ray::Draw()
+void Ray::Draw(float offset)
 {
 	switch (m_axis)
 	{
 		case VERTICAL:
-			sf2d_draw_rectangle(m_x, m_y, CELL_SIZE, HEIGHT, m_color);
+			sf2d_draw_rectangle(m_x-offset, m_y, CELL_SIZE, HEIGHT+offset, m_color);
 			break;
 		case HORIZONTAL:
-			sf2d_draw_rectangle(m_x, m_y, TOP_WIDTH, CELL_SIZE, m_color);
+			sf2d_draw_rectangle(m_x-offset, m_y, TOP_WIDTH + offset, CELL_SIZE, m_color);
 			break;
 	}
 }

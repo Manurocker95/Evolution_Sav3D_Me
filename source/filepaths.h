@@ -1,9 +1,10 @@
+#pragma once
 #ifndef _FILEPATHS_H_
 #define _FILEPATHS_H_
 
 /* This file is part of Evolution Sav3D Me!
 
-Copyright (C) 2016 Manuel Rodr√≠guez Matesanz
+Copyright (C) 2016 Manuel RodrÌguez Matesanz
 >    This program is free software: you can redistribute it and/or modify
 >    it under the terms of the GNU General Public License as published by
 >    the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +21,10 @@ Copyright (C) 2016 Manuel Rodr√≠guez Matesanz
 */
 
 //Documento de Maxima puntuacion 
-#define SCORE_FILE "romfs:/resources/Files/data.txt"
+#define SCORE_FILE "sdmc:/3ds/data/Evolution_Sav3D_Me/ES3DM.sav"
 
 /* Sonido */
-// M√∫sica de fondo
+// M˙sica de fondo
 #define SND_BGM_TITLE "romfs:/resources/Sounds/Music/HomeBaseGroove.wav"
 #define SND_BGM_GAME  "romfs:/resources/Sounds/Music/game.wav"
 #define SND_BGM_GAMEOVER "romfs:/resources/Sounds/Music/HomeBaseGroove.wav"
@@ -38,7 +39,7 @@ Copyright (C) 2016 Manuel Rodr√≠guez Matesanz
 #define SND_SFX_BANANA "romfs:/resources/Sounds/SFX/Banana.wav"
 #define SND_SFX_FIRE "romfs:/resources/Sounds/SFX/Powerup.wav"
 
-/* Im√°genes */
+/* Im·genes */
 // Backgrounds
 #define IMG_BG_TITLE_TOP "romfs:/resources/Art/bgTitletop.png"
 #define IMG_BG_TITLE_BOT "romfs:/resources/Art/bgTitlebot.png"
@@ -52,7 +53,7 @@ Copyright (C) 2016 Manuel Rodr√≠guez Matesanz
 #define IMG_SPLASHSCREEN "romfs:/resources/Art/sc.png"
 #define IMG_SPLASHSCREENBOTTOM "romfs:/resources/Art/scbot.png"
 
-// Sprites (Mono, pl√°tano, fuego...)
+// Sprites (Mono, pl·tano, fuego...)
 #define IMG_MONKEY_SPRITE "romfs:/resources/Art/Monkey.png"
 #define IMG_MONKEY_SPRITE_DYING "romfs:/resources/Art/DyingMonkey.png"
 #define IMG_MONKEY_SPRITE_DEAD "romfs:/resources/Art/DeadMonkey.png"

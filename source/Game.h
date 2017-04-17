@@ -40,7 +40,7 @@ class Game
 public:
 	enum States { PLAYING, PAUSE, DYING, DEAD, OUT, NONE};    // Enumeración de estados: Si está vivo y juegando/en pausa o muerto
 	enum Screens { SPLASH, TITLESCREEN, GAME, ENDSCREEN };// 0=Pantalla de título, 1=Pantalla de juego, 2=Pantalla de muerte
-	Game();									// Constructor
+	Game(int score);									// Constructor
 	void CheckInputs();						// Método que comprueba los inputs del jugador para mover al personaje o pausar el juego
 	void Update();							// Método que se llama cada frame
 	void Draw();							// Método que dibuja los gráficos		
@@ -101,6 +101,7 @@ private:
 	sound* m_sfxFire;
 	bool m_sfxSplash;
 	u8* data = NULL;
+	float m_offset;
 };
 
 #endif
